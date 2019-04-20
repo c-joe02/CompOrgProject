@@ -1,22 +1,17 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
 package processor;
 
 import java.util.*;
 import java.io.*;
 
-/**
- *
- * @author Benson
- */
 public class Processor {
 
     /**
      * Main memory of the simulated computer
      */
+    
+    private int PC = 0;// program counter, or instruction address register
+    private int IR = 0;// the instruction register, stores current instruction
+    private int[] reg = new int[8]; //8 registers
     private Memory memory;
 
     /**
@@ -24,70 +19,58 @@ public class Processor {
      * @param mem
      */
     public Processor(int mem) {
+        int cap = 256;
         memory = new Memory(cap);
     }
+    
+    public boolean step() { //steps through each instruction address
+        IR = memory.read(PC++);
+        if (IR == 0) {
+            return false;    //halt program
+        }
+        return true;   //continue to execute next IR
+    }
 
-    private int[] reg = new int[8];
+    public void dump() {// essentially displays all registers
+        for (int i = 0; i < reg.length; i++) {
+            System.out.println("reg[" + Integer.toString(i) + "] = " + Integer.toHexString(reg[i]));
+        }
+        System.out.println("PC = " + Integer.toHexString(PC));
+        System.out.println("IR = " + Integer.toHexString(IR));
+    }
 
-    private int PC;
-
-    /**
-     *
-     * @return
-     */
     public int getPC() {
         return PC;
     }
 
-    /**
-     *
-     * @param PC
-     */
     public void setPC(int PC) {
         this.PC = PC;
     }
 
-    private int IR = PC++;
-
-    /**
-     *
-     * @return
-     */
     public int getIR() {
         return IR;
     }
 
-    /**
-     *
-     * @param IR
-     */
     public void setIR(int IR) {
         this.IR = IR;
     }
 
-    /**
-     *
-     * @return
-     */
-    public boolean step() {
-        if (IR == 0) {
-            return false;
-        } else {
-            while (IR != 0) {
-                PC++;
-            }
-        }
-        return true;
+    public int[] getReg() {
+        return reg;
     }
 
-    /**
-     *
-     */
-    public void dump() {
-        
+    public void setReg(int[] reg) {
+        this.reg = reg;
     }
 
-    public static void main(String[] args) {
-
+    public Memory getMemory() {
+        return memory;
     }
+
+    public void setMemory(Memory memory) {
+        this.memory = memory;
+    }
+    
+    //decoder goes here -Benson
 }
+
