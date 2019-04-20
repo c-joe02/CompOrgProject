@@ -1,29 +1,21 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
-package console;
+package memory;
 
-/**
- *
- * @author Veteran
- */
 public class Memory {
-    
-    public int cell;
-    public int CAP=256;
-    
-    private int read(add r int ){
-     
-    
-     return read int;
-     
-    
-        
 
-}
-    private int write(add r int, data int){
-    return
-}
+    private int cap = 256;  //capacity 256 by default
+    private int[] cell = new int[cap];  //instruction set
+
+    public int read(int addr) {    //inputs instruction address
+        return cell[addr];  //returns instruction
+
+    }
+
+    public int write(int addr, int data) { //address and new data to be written
+        return cell[addr] = data;
+    }
+    
+    public void dump(){
+        //I'm not sure how it works here -Benson
+    } 
+
 }
