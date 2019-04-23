@@ -4,6 +4,10 @@ public class Memory {
 
     private int cap = 256;  //capacity 256 by default
     private int[] cell = new int[cap];  //instruction set
+    
+    public Memory(int cap) {
+        
+    }
 
     public int read(int addr) {    //inputs instruction address
         return cell[addr];  //returns instruction
