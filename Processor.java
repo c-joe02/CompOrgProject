@@ -1,4 +1,4 @@
-package processor;
+package console;
 
 import java.util.*;
 import java.io.*;
@@ -20,7 +20,10 @@ public class Processor {
      */
     public Processor(int mem) {
         int cap = 256;
-        memory = new Memory(cap);
+    }
+    
+    public void setMemory(Memory mem){
+        this.memory = mem;
     }
     
     public boolean step() { //steps through each instruction address
@@ -73,4 +76,3 @@ public class Processor {
     
     //decoder goes here -Benson
 }
-
