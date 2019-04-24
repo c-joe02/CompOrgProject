@@ -18,13 +18,11 @@ public class Processor {
      *
      * @param mem
      */
-    public Processor(int mem) {
+    public Processor() {
         int cap = 256;
     }
     
-    public void setMemory(Memory mem){
-        this.memory = mem;
-    }
+   
     
     public boolean step() { //steps through each instruction address
         IR = memory.read(PC++);
@@ -41,7 +39,18 @@ public class Processor {
         System.out.println("PC = " + Integer.toHexString(PC));
         System.out.println("IR = " + Integer.toHexString(IR));
     }
-
+    
+    public int pab(int n, int removeR, int keep){
+//        int shiftRight = n/((int)Math.pow(2, removeR));
+        int shiftLeft = n * (int) Math.pow(2, (32-keep));
+        int shiftRight = shiftLeft/((int)Math.pow(2, 32-keep));
+        return shiftLeft;//see how to turn off bits and keep the same
+    } 
+    
+    
+    public void decode(){
+        
+    }
     public int getPC() {
         return PC;
     }
@@ -73,6 +82,14 @@ public class Processor {
     public void setMemory(Memory memory) {
         this.memory = memory;
     }
+    public static void main(String[] args) {
+        Processor p = new Processor();
+        int n = 13;
+        System.out.println(Integer.toBinaryString(n));
+        int ans = p.pab(n, 2,3);
+        System.out.println(Integer.toBinaryString(ans));
+    }
     
     //decoder goes here -Benson
 }
+
