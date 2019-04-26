@@ -49,9 +49,9 @@ public class Processor {
     
     
     public void decode(){
-        int pab =1;
+     getPAB();
         //1. load a b // reg[a] = cell[reg[b]]
-        switch(pab){
+        switch(processor.p){
             case 1:
                //insert code here -Miguel
                 
