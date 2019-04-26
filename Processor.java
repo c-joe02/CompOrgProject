@@ -8,11 +8,14 @@ public class Processor {
     /**
      * Main memory of the simulated computer
      */
-    
     private int PC = 0;// program counter, or instruction address register
     private int IR = 0;// the instruction register, stores current instruction
     private int[] reg = new int[8]; //8 registers
     private Memory memory;
+    
+    private int p;
+    private int a;
+    private int b;
 
     /**
      *
@@ -21,9 +24,7 @@ public class Processor {
     public Processor() {
         int cap = 256;
     }
-    
-   
-    
+
     public boolean step() { //steps through each instruction address
         IR = memory.read(PC++);
         if (IR == 0) {
@@ -39,13 +40,17 @@ public class Processor {
         System.out.println("PC = " + Integer.toHexString(PC));
         System.out.println("IR = " + Integer.toHexString(IR));
     }
-    
-    public int pab(int n, int removeR, int keep){
-//        int shiftRight = n/((int)Math.pow(2, removeR));
-        int shiftLeft = n * (int) Math.pow(2, (32-keep));
-        int shiftRight = shiftLeft/((int)Math.pow(2, 32-keep));
-        return shiftLeft;//see how to turn off bits and keep the same
-    } 
+
+    public void getPAB(int n) {
+        int srP = n / ((int) Math.pow(2, 8)); //removes the bits on the right we don't need
+        int srA = n / ((int) Math.pow(2, 4));
+        int srB = n / ((int) Math.pow(2, 0));
+        
+        this.p = (srP & 15);    //keeps the bits we want
+        this.a = (srA & 15);
+        this.b = (srB & 15);
+       
+    }
     
     
     public void decode(){
@@ -157,14 +162,16 @@ public class Processor {
     public void setMemory(Memory memory) {
         this.memory = memory;
     }
+
+    
     public static void main(String[] args) {
         Processor p = new Processor();
-        int n = 13;
+        int n = 0b101011010110;
         System.out.println(Integer.toBinaryString(n));
-        int ans = p.pab(n, 2,3);
-        System.out.println(Integer.toBinaryString(ans));
+        p.getPAB(n);
+        System.out.println("p: "+Integer.toBinaryString(p.p)+"\ta: "+Integer.toBinaryString(p.a)+"\tb: "+Integer.toBinaryString(p.b));
     }
-    
+
     //decoder goes here -Benson
 }
 
