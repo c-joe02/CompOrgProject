@@ -58,11 +58,15 @@ public class Processor {
         this.b = (srB & 15);
 
     }
+    
     /* 
-    parses entire line for int value. Needed for loadc
+    parses entire line for int value. Needed for loadc.
+    Constant value is inherently hex, and will be converted
+    to decimal
     */
     public int constantScan(String inp) {
-        return Integer.parseInt(inp);
+        int result = Integer.parseInt(inp, 16);
+        return result;
     }
 
     public void decode(int n) {
@@ -207,8 +211,8 @@ public class Processor {
         pro.getPAB(n);
         System.out.println("p: " + Integer.toBinaryString(pro.p) + "\ta: " + Integer.toBinaryString(pro.a) + "\tb: " + Integer.toBinaryString(pro.b));
         
-        //tests constantScan
-        String e = "00000123";
+        //tests constantScan (hex 1A = decimal 26)
+        String e = "0000001A";
         System.out.println(pro.constantScan(e));
         
         }
