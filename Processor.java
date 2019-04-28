@@ -41,12 +41,19 @@ public class Processor {
         System.out.println("IR = " + Integer.toHexString(IR));
     }
 
-    public void getPAB(int n) {
-        int srP = n / ((int) Math.pow(2, 8)); //removes the bits on the right we don't need
-        int srA = n / ((int) Math.pow(2, 4));
-        int srB = n / ((int) Math.pow(2, 0));
+   /*gets instruction as string, extracts last three values for pab, 
+     parses into integer values, then initializes pab
+     */
+    public void getPAB(String inp) { 
+        String lastThreeDigits = ""; 
+        lastThreeDigits = inp.substring(inp.length() - 3);
+        int n = Integer.parseInt(lastThreeDigits.trim());
+        
+        int srP = (n/100 % 10) / ((int) Math.pow(2, 0));
+        int srA = (n/10 % 10) / ((int) Math.pow(2, 0));
+        int srB = (n % 10) / ((int) Math.pow(2, 0));
 
-        this.p = (srP & 15);    //keeps the bits we want
+        this.p = (srP & 15);
         this.a = (srA & 15);
         this.b = (srB & 15);
 
@@ -187,10 +194,9 @@ public class Processor {
 
     public static void main(String[] args) {
         Processor p = new Processor();
-        int n = 0b101011010110;
-        System.out.println(Integer.toBinaryString(n));
-        p.getPAB(n);
-        System.out.println("p: " + Integer.toBinaryString(p.p) + "\ta: " + Integer.toBinaryString(p.a) + "\tb: " + Integer.toBinaryString(p.b));
-    }
+        String n = "0x00000567";
+        pro.getPAB(n);
+        System.out.println("p: " + Integer.toBinaryString(pro.p) + "\ta: " + Integer.toBinaryString(pro.a) + "\tb: " + Integer.toBinaryString(pro.b));
+}
 }
 
