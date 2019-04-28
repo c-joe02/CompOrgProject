@@ -215,6 +215,24 @@ public class Processor {
         String e = "0000001A";
         System.out.println(pro.constantScan(e));
         
+        //tests reading from program1.m1 file
+        try {
+            FileReader fr = new FileReader("program1.m1.txt");
+            BufferedReader br = new BufferedReader(fr);
+
+            String str;
+            while ((str = br.readLine()) != null && (str.length() == 8)) {
+                System.out.println(str);
+                pro.getPAB(str);
+                System.out.println("p: " + Integer.toBinaryString(pro.p) + "\ta: " + Integer.toBinaryString(pro.a) + "\tb: " + Integer.toBinaryString(pro.b));
+
+                
+            }
+
+        } catch (IOException a) {
+            System.out.println("File not found");
+        }
+        
         }
 }
 
