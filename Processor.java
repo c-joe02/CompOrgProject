@@ -58,6 +58,12 @@ public class Processor {
         this.b = (srB & 15);
 
     }
+    /* 
+    parses entire line for int value. Needed for loadc
+    */
+    public int constantScan(String inp) {
+        return Integer.parseInt(inp);
+    }
 
     public void decode(int n) {
         getPAB(n);
@@ -67,6 +73,7 @@ public class Processor {
                 reg[a] = memory.cell[reg[b]];
                 break;
             //2. loadc a // reg[a] = cell[PC++]
+            //NEEDS TO SCAN NEXT LINE FOR CONSTANT VALUE
             case 2:
                 reg[a] = memory.cell[PC++];
                 break;
@@ -194,9 +201,16 @@ public class Processor {
 
     public static void main(String[] args) {
         Processor p = new Processor();
+        
+        //tests getPAB
         String n = "0x00000567";
         pro.getPAB(n);
         System.out.println("p: " + Integer.toBinaryString(pro.p) + "\ta: " + Integer.toBinaryString(pro.a) + "\tb: " + Integer.toBinaryString(pro.b));
-}
+        
+        //tests constantScan
+        String e = "00000123";
+        System.out.println(pro.constantScan(e));
+        
+        }
 }
 
