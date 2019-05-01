@@ -19,7 +19,6 @@ public class Memory {
     }
     
     public void dump(){
-        //I'm not sure how it works here -Benson
           for(int i=0;i<cap;i++ ){
             System.out.println("cell[" + Integer.toHexString(i) + "] = " + Integer.toHexString(cell[i]));  
         }
