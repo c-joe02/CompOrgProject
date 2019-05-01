@@ -6,6 +6,9 @@ import javax.swing.*;    // Needed for Swing classes
 import java.awt.Dimension;
 import javax.swing.JTextArea;
 import java.awt.FlowLayout;
+import java.io.File;
+import java.io.FileNotFoundException;
+import java.util.Scanner;
 
 /**
  *
@@ -15,9 +18,11 @@ public class Micro1Viewer extends JFrame {
 
     private JPanel panel = new JPanel();             // To reference a panel
     private JLabel messageLabel;      // To reference a label
+    private JLabel enterFile;
     private JTextField[] registerTextField = new JTextField[8]; //Showing the current content of each register
+    private JTextField box = new JTextField(20);
     private JTextArea memoryTextArea = new JTextArea();
-    private JButton menuButton;       //  for the Console commands: step, load, memory (dumps to the
+           //  for the Console commands: step, load, memory (dumps to the
     private JButton regButton;
     private JButton loadButton;
     private JButton stepButton;
@@ -33,7 +38,7 @@ public class Micro1Viewer extends JFrame {
     public Micro1Viewer() {
         // Set the window title.
         setTitle("Micro Processor Machine");
-
+        p.setMemory(m);
         // Set the size of the window.
         setSize(WINDOW_WIDTH, WINDOW_HEIGHT);
 
@@ -45,15 +50,20 @@ public class Micro1Viewer extends JFrame {
 
         // Add the panel to the frame's content pane.
         add(panel);
-          
 
         // Display the window.
         setVisible(true);
         JFrame.setDefaultLookAndFeelDecorated(true);
-         JFrame frame = new JFrame("Memory cells ");
+        JFrame frame = new JFrame("Memory cells ");
+
         frame.setLayout(new FlowLayout());
-             frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-        frame.add(memoryTextArea);
+        frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+
+        JScrollPane scrollPane = new JScrollPane(memoryTextArea);
+        scrollPane.setBounds(23, 40, 394, 191);
+        frame.getContentPane().add(scrollPane);
+        
+
         frame.pack();
         frame.setVisible(true);
     }
@@ -62,10 +72,7 @@ public class Micro1Viewer extends JFrame {
         // Create a label to display instructions.
         messageLabel = new JLabel("Registers "
                 + "current contents");
-        
-      
-        
-        
+
         for (int i = 0; i < registerTextField.length; i++) {
 
             registerTextField[i] = new JTextField(20);
@@ -77,65 +84,110 @@ public class Micro1Viewer extends JFrame {
         loadButton = new JButton("Load");
         stepButton = new JButton("Step");
         memoryButton = new JButton("Memory");
-      
-        memoryTextArea.setPreferredSize(new Dimension (100, 100));
+        enterFile = new JLabel("Enter File here: ");
+
+        memoryTextArea.setPreferredSize(new Dimension(100, 685));
         // Add an action listener to the button.
-        regButton.addActionListener(new menuButtonListener());
+        regButton.addActionListener(new regButtonListener());
         memoryButton.addActionListener(new memoryButtonListener());
+        loadButton.addActionListener(new loadButtonListener());
+        stepButton.addActionListener(new stepButtonListener());
 
         // Create a JPanel object and let the panel
         // field reference it.
         // Add the label, text field, and button
         // components to the panel.
-        
         panel.add(messageLabel);
 
         panel.add(regButton);
         panel.add(loadButton);
         panel.add(stepButton);
         panel.add(memoryButton);
+        panel.add(enterFile);
+        panel.add(box);
+      
+    }
+
+    private class loadButtonListener implements ActionListener {
+
+        public void actionPerformed(ActionEvent e) {
+            try {
+              
+                File f = new File(box.getText());
+                Scanner scan = new Scanner(f);
+                int address = 0;
+                while (scan.hasNext()) {
+                    m.write(address++, scan.nextInt(16));
+                }
+                p.setPC(0);
+            } catch (FileNotFoundException error) {
+
+                System.out.println(error);
+            }
+
+        }
+    }
+
+    private class stepButtonListener implements ActionListener {
+
+        public void actionPerformed(ActionEvent e) {
+            int num = 1;
+            boolean halt = false;
+            for (int i = 0; i < num && !halt; i++) {
+                if (!halt) {
+                    halt = p.step();
+                }
+                if (halt) {
+                    System.out.println("program terminated");
+                    break;
+                }
+            }
+            System.out.println("done");
+        }
     }
 
     private class memoryButtonListener implements ActionListener {
 
         public void actionPerformed(ActionEvent e) {
-            
-            System.out.println(m.cell.length);
-            
-            for (int i = 0; i < m.cell.length; i++) {
-                System.out.println(m.cell[i]);
 
-               // String memoryCells = memoryTextArea.getText();
+           
+            String stow = "";
+            for (int i = 0; i < m.getCapacity(); i++) {
 
-                memoryTextArea.setText("" + m.cell[i]);
-            }
-        }
-    }
-        private class menuButtonListener implements ActionListener {
-
-            /**
-             * The actionPerformed method executes when the user clicks on the
-             * Calculate button.
-             *
-             * @param e The event object.
-             */
-            public void actionPerformed(ActionEvent e) {
-
-                System.out.println("test");
-                System.out.println(p.reg.length);
-
-                for (int i = 0; i < p.reg.length; i++) {
-
-                    System.out.println(p.reg[i]);
-
-                    registerTextField[i].setText("" + p.reg[i]);
-                }
+                stow = stow + "\ncell[" + Integer.toHexString(i) + "] = " + Integer.toHexString(m.read(i));
+                // String memoryCells = memoryTextArea.getText();
 
             }
-
+            memoryTextArea.setText(stow);
         }
 
-        public static void main(String[] args) {
-            Micro1Viewer mv = new Micro1Viewer();
-        }
     }
+
+    private class regButtonListener implements ActionListener {
+
+        /**
+         * The actionPerformed method executes when the user clicks on the
+         * Calculate button.
+         *
+         * @param e The event object.
+         */
+        public void actionPerformed(ActionEvent e) {
+
+            
+            
+
+            for (int i = 0; i < p.reg.length; i++) {
+
+                
+
+                registerTextField[i].setText("" + p.reg[i]);
+            }
+
+        }
+
+    }
+
+    public static void main(String[] args) {
+        Micro1Viewer mv = new Micro1Viewer();
+    }
+}
