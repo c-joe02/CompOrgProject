@@ -1,4 +1,4 @@
-package memory;
+package console;
 
 public class Memory {
 
@@ -24,5 +24,10 @@ public class Memory {
         }
         
     } 
+    
+    public int getCapacity(){
+        
+        return cap;
+    }
 
 }
