@@ -1,4 +1,5 @@
 package console;
+
 import javax.swing.JFrame;
 import java.awt.event.*; // Needed for ActionListener Interface
 import javax.swing.*;    // Needed for Swing classes
@@ -7,85 +8,100 @@ import javax.swing.*;    // Needed for Swing classes
  *
  * @author Veteran
  */
-public class Micro1Viewer extends JFrame{
-    private JPanel panel;             // To reference a panel
+public class Micro1Viewer extends JFrame {
+
+    private JPanel panel= new JPanel();             // To reference a panel
     private JLabel messageLabel;      // To reference a label
-    private JTextField registerTextField; //Showing the current content of each register
+    private JTextField[] registerTextField  =new JTextField[8]; //Showing the current content of each register
     private JButton menuButton;       //  for the Console commands: step, load, memory (dumps to the
-                                     //command console), and registers (updates the text fields.)
-    private final int WINDOW_WIDTH = 700;  // Window width
-    private final int WINDOW_HEIGHT = 500; // Window height
-    
-    public Micro1Viewer()
+    private JButton regButton;
+    private JButton loadButton;
+     private JButton stepButton;
+    //command console), and registers (updates the text fields.)
+    private final int WINDOW_WIDTH = 500;  // Window width
+    private final int WINDOW_HEIGHT = 350; // Window height
+
+    private Processor p = new Processor();
+    private Memory m = new Memory(256);
+
+    public Micro1Viewer() {
+        // Set the window title.
+        setTitle("Micro Processor Machine");
+
+        // Set the size of the window.
+        setSize(WINDOW_WIDTH, WINDOW_HEIGHT);
+
+        // Specify what happens when the close button is clicked.
+        setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+
+        // Build the panel and add it to the frame.
+        buildPanel();
+
+        // Add the panel to the frame's content pane.
+        add(panel);
+
+        // Display the window.
+        setVisible(true);
+    }
+
+    private void buildPanel() {
+        // Create a label to display instructions.
+        messageLabel = new JLabel("Registers "
+                + "current contents");
+
+        // Create a text field 10 characters wide.
+         for(int i =0; i<registerTextField.length;i++)
          {
-            // Set the window title.
-            setTitle("Micro Processor Machine");
+             
+              registerTextField[i] = new JTextField(20);
+               panel.add(registerTextField[i]);
+         }
+       
 
-             // Set the size of the window.
-             setSize(WINDOW_WIDTH, WINDOW_HEIGHT);
+        // Create a button with the caption "Calculate".
+        regButton = new JButton("Register");
+        loadButton = new JButton("Load");
+        stepButton = new JButton("Step");
 
-             // Specify what happens when the close button is clicked.
-             setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+        // Add an action listener to the button.
+        regButton.addActionListener(new menuButtonListener());
 
-             // Build the panel and add it to the frame.
-             buildPanel();
+        // Create a JPanel object and let the panel
+        // field reference it.
+       
 
-             // Add the panel to the frame's content pane.
-             add(panel);
-      
-             // Display the window.
-             setVisible(true);
+        // Add the label, text field, and button
+        // components to the panel.
+        panel.add(messageLabel);
+       
+        panel.add(regButton);
+        panel.add(loadButton);
+        panel.add(stepButton);
+    }
+
+    private class menuButtonListener implements ActionListener {
+
+        /**
+         * The actionPerformed method executes when the user clicks on the
+         * Calculate button.
+         *
+         * @param e The event object.
+         */
+
+        public void actionPerformed(ActionEvent e) {
+            System.out.println("test");
+            System.out.println(p.reg.length);
+            for (int i = 0; i < p.reg.length; i++) {
+
+                System.out.println(p.reg[i]);
+            
+                registerTextField[i].setText(""+p.reg[i]);
+                
+            }
+
         }
-          private void buildPanel()
-        {
-              // Create a label to display instructions.
-              messageLabel = new JLabel("Registers " +
-                                "current contents");
 
-              // Create a text field 10 characters wide.
-             registerTextField = new JTextField();
-
-             // Create a button with the caption "Calculate".
-              menuButton = new JButton("help commands");
-
-             // Add an action listener to the button.
-             menuButton.addActionListener(new menuButtonListener());
-
-             // Create a JPanel object and let the panel
-             // field reference it.
-             panel = new JPanel();
-
-             // Add the label, text field, and button
-              // components to the panel.
-              panel.add(messageLabel);
-              panel.add(registerTextField);
-              panel.add(menuButton);
-        }
-          
-         private class menuButtonListener implements ActionListener
-   {
-      /**
-         The actionPerformed method executes when the user
-         clicks on the Calculate button.
-         @param e The event object.
-      */
-
-      public void actionPerformed(ActionEvent e)
-      {
-         String input;  // To hold the user's input
-         
-
-         // Get the text entered by the user into the
-         // text field.
-         input = registerTextField.getText();
-
-     
-
-         // Display the result.
-         JOptionPane.showMessageDialog(null, input +
-                  " You entered");
-      }
-   }
+    }
 
     public static void main(String[] args) {
         Micro1Viewer mv = new Micro1Viewer();
