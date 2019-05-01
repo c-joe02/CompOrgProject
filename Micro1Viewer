@@ -3,6 +3,9 @@ package console;
 import javax.swing.JFrame;
 import java.awt.event.*; // Needed for ActionListener Interface
 import javax.swing.*;    // Needed for Swing classes
+import java.awt.Dimension;
+import javax.swing.JTextArea;
+import java.awt.FlowLayout;
 
 /**
  *
@@ -10,13 +13,16 @@ import javax.swing.*;    // Needed for Swing classes
  */
 public class Micro1Viewer extends JFrame {
 
-    private JPanel panel= new JPanel();             // To reference a panel
+    private JPanel panel = new JPanel();             // To reference a panel
     private JLabel messageLabel;      // To reference a label
-    private JTextField[] registerTextField  =new JTextField[8]; //Showing the current content of each register
+    private JTextField[] registerTextField = new JTextField[8]; //Showing the current content of each register
+    private JTextArea memoryTextArea = new JTextArea();
     private JButton menuButton;       //  for the Console commands: step, load, memory (dumps to the
     private JButton regButton;
     private JButton loadButton;
-     private JButton stepButton;
+    private JButton stepButton;
+    private JButton memoryButton;
+
     //command console), and registers (updates the text fields.)
     private final int WINDOW_WIDTH = 500;  // Window width
     private final int WINDOW_HEIGHT = 350; // Window height
@@ -39,71 +45,97 @@ public class Micro1Viewer extends JFrame {
 
         // Add the panel to the frame's content pane.
         add(panel);
+          
 
         // Display the window.
         setVisible(true);
+        JFrame.setDefaultLookAndFeelDecorated(true);
+         JFrame frame = new JFrame("Memory cells ");
+        frame.setLayout(new FlowLayout());
+             frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+        frame.add(memoryTextArea);
+        frame.pack();
+        frame.setVisible(true);
     }
 
     private void buildPanel() {
         // Create a label to display instructions.
         messageLabel = new JLabel("Registers "
                 + "current contents");
+        
+      
+        
+        
+        for (int i = 0; i < registerTextField.length; i++) {
 
-        // Create a text field 10 characters wide.
-         for(int i =0; i<registerTextField.length;i++)
-         {
-             
-              registerTextField[i] = new JTextField(20);
-               panel.add(registerTextField[i]);
-         }
-       
+            registerTextField[i] = new JTextField(20);
+            panel.add(registerTextField[i]);
+        }
 
-        // Create a button with the caption "Calculate".
+        // Create a button .
         regButton = new JButton("Register");
         loadButton = new JButton("Load");
         stepButton = new JButton("Step");
-
+        memoryButton = new JButton("Memory");
+      
+        memoryTextArea.setPreferredSize(new Dimension (100, 100));
         // Add an action listener to the button.
         regButton.addActionListener(new menuButtonListener());
+        memoryButton.addActionListener(new memoryButtonListener());
 
         // Create a JPanel object and let the panel
         // field reference it.
-       
-
         // Add the label, text field, and button
         // components to the panel.
+        
         panel.add(messageLabel);
-       
+
         panel.add(regButton);
         panel.add(loadButton);
         panel.add(stepButton);
+        panel.add(memoryButton);
     }
 
-    private class menuButtonListener implements ActionListener {
-
-        /**
-         * The actionPerformed method executes when the user clicks on the
-         * Calculate button.
-         *
-         * @param e The event object.
-         */
+    private class memoryButtonListener implements ActionListener {
 
         public void actionPerformed(ActionEvent e) {
-            System.out.println("test");
-            System.out.println(p.reg.length);
-            for (int i = 0; i < p.reg.length; i++) {
-
-                System.out.println(p.reg[i]);
             
-                registerTextField[i].setText(""+p.reg[i]);
-                
+            System.out.println(m.cell.length);
+            
+            for (int i = 0; i < m.cell.length; i++) {
+                System.out.println(m.cell[i]);
+
+               // String memoryCells = memoryTextArea.getText();
+
+                memoryTextArea.setText("" + m.cell[i]);
+            }
+        }
+    }
+        private class menuButtonListener implements ActionListener {
+
+            /**
+             * The actionPerformed method executes when the user clicks on the
+             * Calculate button.
+             *
+             * @param e The event object.
+             */
+            public void actionPerformed(ActionEvent e) {
+
+                System.out.println("test");
+                System.out.println(p.reg.length);
+
+                for (int i = 0; i < p.reg.length; i++) {
+
+                    System.out.println(p.reg[i]);
+
+                    registerTextField[i].setText("" + p.reg[i]);
+                }
+
             }
 
         }
 
+        public static void main(String[] args) {
+            Micro1Viewer mv = new Micro1Viewer();
+        }
     }
-
-    public static void main(String[] args) {
-        Micro1Viewer mv = new Micro1Viewer();
-    }
-}
