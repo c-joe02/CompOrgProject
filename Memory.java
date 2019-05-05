@@ -26,8 +26,8 @@ public class Memory {
     } 
     
     public int getCapacity(){
-        
         return cap;
     }
 
 }
+
