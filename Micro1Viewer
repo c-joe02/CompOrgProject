@@ -171,16 +171,10 @@ public class Micro1Viewer extends JFrame {
          *
          * @param e The event object.
          */
-        public void actionPerformed(ActionEvent e) {
-
-            
-            
+        public void actionPerformed(ActionEvent e) {         
 
             for (int i = 0; i < p.reg.length; i++) {
-
-                
-
-                registerTextField[i].setText("" + p.reg[i]);
+                registerTextField[i].setText("" + Integer.toHexString(p.reg[i]));
             }
 
         }
