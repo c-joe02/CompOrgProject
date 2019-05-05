@@ -1,0 +1,32 @@
+cell[23] = cell[20] + cell[21] + cell[22]
+cell[23] = 600
+
+cell[20] = 100
+cell[21] = 200
+cell[22] = 300
+
+
+00000200 // loadc 0
+00000014 // reg[0] = 14(20)  //reg 0 has add
+00000210 // loadc 1
+00000000 // reg[1] = 0
+00000220 // loadc 2
+00000001 // reg[2] = 1
+00000130 // load 3 0 -> reg[3] = cell[reg[0]] = cell[20]
+00000413 // add reg[1] += reg[3] (reg[1] = cell[20])
+00000402 // add reg[0] += reg[2] (reg[0] = 14+1 = 15(21) )
+00000130 // load 3 0 -> reg[3] = cell[reg[0]] = cell[21]
+00000413 // add reg[1] += reg[3] (reg[1] = cell[20] + cell[21])
+00000402 // add reg[0] += reg[2] (reg[0] = 16(22) )
+00000130 // load 3 0 -> reg[3] = cell[reg[0]] = cell[22]
+00000413 // add reg[1] += reg[3] (reg[1] = cell[20] + cell[21] + cell[22])
+00000402 // add reg[0] += reg[2] (reg[0] = 17(23) )
+00000301 // store 0 1 -> cell[reg[0]] = reg[1] -> cell[23] = cell[20] + cell[21] + cell[22]
+00000000 // halt
+00000000
+00000000
+00000000
+64
+c8
+12c
+00000000

@@ -1,0 +1,33 @@
+cell[12] = 2^cell[11] = 2 ^ 8 = 256 (100 in hex)
+
+cell[11] = 8
+
+00000200   //loadc 0
+00000001   //reg[0] = 1 < number to shift
+00000210   //loadc 1
+00000011   //reg[1] = 11 < address of exponent
+00000220   //loadc 2 < accumulator
+00000001   //reg[2] = 1
+00000270   //loadc 7 < address to loop
+00000009   //reg[7] = 9
+00000131   //load reg[3] = cell[reg[1]] = cell[f] (8)
+00000b00   //lshift reg[0] = reg[0] <<
+00000632   //sub reg[3] = reg[3] - reg[2] = 8 - 1 = 7
+00000f37   //if (reg[3] != 0) pc = reg[7]
+00000412   //add reg[1] = reg[1] + reg[2] = 12
+00000310   //store cell[reg[1]] = reg[0] ; cell[12] = ANSWER
+00000000
+00000000
+00000000
+00000008
+
+
+
+
+
+
+
+
+
+
+
